@@ -11,7 +11,6 @@
 - **Collaboration**: Personal and team management, real-time collaboration.
 - **Knowledge Archive**: Personal and shared.
 - **Activity Management**: Personal and team tasks, advanced tracking.
-- **Modularity**: Architecture ready for future plugins (not included in the MVP).
 
 ---
 
