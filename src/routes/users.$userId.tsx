@@ -1,23 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
-import type { User } from "~/utils/users";
-import { DEPLOY_URL } from "~/utils/users";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { ErrorComponent, createFileRoute } from "@tanstack/react-router";
+import type { ErrorComponentProps } from "@tanstack/react-router";
 import { NotFound } from "~/components/NotFound";
-import { UserErrorComponent } from "~/components/UserError";
+import { userQueryOptions } from "~/utils/users";
 
 export const Route = createFileRoute("/users/$userId")({
-  loader: async ({ params: { userId } }) => {
-    try {
-      const res = await fetch(DEPLOY_URL + "/api/users/" + userId);
-      if (!res.ok) {
-        throw new Error("Unexpected status code");
-      }
-
-      const data = (await res.json()) as User;
-
-      return data;
-    } catch {
-      throw new Error("Failed to fetch user");
-    }
+  loader: async ({ context, params: { userId } }) => {
+    await context.queryClient.ensureQueryData(userQueryOptions(userId));
   },
   errorComponent: UserErrorComponent,
   component: UserComponent,
@@ -26,8 +15,14 @@ export const Route = createFileRoute("/users/$userId")({
   },
 });
 
+export function UserErrorComponent({ error }: ErrorComponentProps) {
+  return <ErrorComponent error={error} />;
+}
+
 function UserComponent() {
-  const user = Route.useLoaderData();
+  const params = Route.useParams();
+  const userQuery = useSuspenseQuery(userQueryOptions(params.userId));
+  const user = userQuery.data;
 
   return (
     <div className="space-y-2">
