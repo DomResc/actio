@@ -124,7 +124,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             Deferred
           </Link>{" "}
           <Link
-            // @ts-expect-error: This route does not exist and is used to demonstrate not found handling
+            // @ts-expect-error: This route does not exist and is used to test the notFoundComponent
             to="/this-route-does-not-exist"
             activeProps={{
               className: "font-bold",

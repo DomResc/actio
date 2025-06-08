@@ -10,11 +10,6 @@ import pluginQuery from "@tanstack/eslint-plugin-query";
 export default defineConfig([
   {
     files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
-    plugins: { js },
-    extends: ["js/recommended"],
-  },
-  {
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
     settings: {
       react: {
@@ -22,10 +17,11 @@ export default defineConfig([
       },
     },
   },
-  eslintConfigPrettier,
+  js.configs.recommended,
   tseslint.configs.recommended,
-  ...pluginRouter.configs["flat/recommended"],
-  ...pluginQuery.configs["flat/recommended"],
   pluginReact.configs.flat.recommended,
   pluginReact.configs.flat["jsx-runtime"],
+  ...pluginRouter.configs["flat/recommended"],
+  ...pluginQuery.configs["flat/recommended"],
+  eslintConfigPrettier,
 ]);
