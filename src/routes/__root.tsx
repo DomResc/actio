@@ -82,7 +82,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <div className="p-2 flex gap-2 text-lg">
+        <div className="flex gap-2 p-2 text-lg">
           <Link
             to="/"
             activeProps={{
