@@ -1,12 +1,13 @@
 # Actio
 
-**Actio** is an open source tool for knowledge management (notes) and project management (tasks, projects), designed for individuals and teams, with a focus on privacy, security, real-time collaboration, and methodological flexibility.
+**Actio** is an open source tool for knowledge management and project management, designed for individuals and teams, with a focus on security, privacy, real-time collaboration, and methodological flexibility.
 
 ---
 
 ## 🚀 Main Goals
 
-- **Security**: All information is client-side encrypted (E2EE).
+- **Security**: All information is encrypted client-side (E2EE).
+- **Privacy**: Only the user (and authorized collaborators) can access the data; even the server never sees it in cleartext.
 - **Unification**: Integrated management of notes and tasks.
 - **Methodological Agnosticism**: Customizable processes, no constraints.
 - **Collaboration**: Personal and team management, real-time collaboration.
