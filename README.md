@@ -46,7 +46,7 @@
 [Backend: TanStack Start API routes/WebSocket]
    │
    ▼
-[Storage: Filesystem (preferred), or SQLite DB + attachments on FS]
+[Storage: SQLite DB + attachments on FS]
 ```
 
 - **Notes and attachments**: always encrypted client-side before storage or sync.
