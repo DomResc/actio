@@ -1,22 +1,26 @@
-node_modules
-package-lock.json
-pnpm-lock.yaml
-yarn.lock
+# Dependency directories
+node_modules/
 
+# System files
 .DS_Store
-.cache
-.env
-.vercel
-.output
-.vinxi
 
+# Build and cache directories
+.cache/
+.vinxi/
+.nitro/
+.tanstack/
 /build/
 /api/
-/server/build
-/public/build
-.vinxi
-# Sentry Config File
+/server/build/
+/public/build/
+.output/
+
+# Environment and config files
+.env
 .env.sentry-build-plugin
+.vercel/
+
+# Test and report outputs
 /test-results/
 /playwright-report/
 /blob-report/
