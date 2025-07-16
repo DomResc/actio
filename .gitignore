@@ -15,6 +15,9 @@ node_modules/
 /public/build/
 .output/
 
+# Local DB
+*.db*
+
 # Environment and config files
 .env
 .env.sentry-build-plugin
