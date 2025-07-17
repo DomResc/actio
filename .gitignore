@@ -5,14 +5,8 @@ node_modules/
 .DS_Store
 
 # Build and cache directories
-.cache/
-.vinxi/
 .nitro/
 .tanstack/
-/build/
-/api/
-/server/build/
-/public/build/
 .output/
 
 # Local DB
@@ -20,11 +14,3 @@ node_modules/
 
 # Environment and config files
 .env
-.env.sentry-build-plugin
-.vercel/
-
-# Test and report outputs
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
