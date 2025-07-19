@@ -12,9 +12,12 @@
     "build": "vite build && tsc --noEmit",
     "start": "vite start",
     "start:node": "node .output/server/index.mjs",
-    "check:test": "pnpm dlx prettier . -c && pnpm dlx eslint && tsc --noEmit",
-    "check:fix": "pnpm dlx prettier . -w && pnpm dlx eslint --fix",
-    "db": "drizzle-kit"
+    "lint:test": "pnpm dlx prettier . -c && pnpm dlx eslint",
+    "lint:fix": "pnpm dlx prettier . -w && pnpm dlx eslint --fix",
+    "db": "drizzle-kit",
+    "db:push": "drizzle-kit push",
+    "auth:secret": "pnpm dlx @better-auth/cli@latest secret",
+    "auth:generate": "pnpm dlx @better-auth/cli@latest generate --config ./src/utils/auth.ts --y --output ./src/db/schema/auth-schema.ts"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.7",
