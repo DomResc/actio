@@ -3,17 +3,17 @@ import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
   HeadContent,
-  Link,
   Outlet,
   Scripts,
   createRootRouteWithContext,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import * as React from "react";
-import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
-import { NotFound } from "~/components/NotFound";
+
+import { DefaultCatchBoundary } from "~/components/default-catch-boundary";
+import { NotFound } from "~/components/not-found";
+import { seo } from "~/lib/seo";
 import appCss from "~/styles/app.css?url";
-import { seo } from "~/utils/seo";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -81,18 +81,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <div className="flex gap-2 p-2 text-lg">
-          <Link
-            to="/"
-            activeProps={{
-              className: "font-bold",
-            }}
-            activeOptions={{ exact: true }}
-          >
-            Home
-          </Link>{" "}
-        </div>
-        <hr />
         {children}
         <TanStackRouterDevtools position="bottom-right" />
         <ReactQueryDevtools buttonPosition="bottom-left" />
