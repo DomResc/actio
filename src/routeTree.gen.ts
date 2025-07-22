@@ -11,6 +11,7 @@
 import { createServerRootRoute } from '@tanstack/react-start/server'
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as dashboardRouteRouteImport } from './routes/(dashboard)/route'
 import { Route as authRouteRouteImport } from './routes/(auth)/route'
 import { Route as dashboardIndexRouteImport } from './routes/(dashboard)/index'
 import { Route as authSignupRouteImport } from './routes/(auth)/signup'
@@ -19,14 +20,18 @@ import { ServerRoute as ApiAuthSplatServerRouteImport } from './routes/api/auth/
 
 const rootServerRouteImport = createServerRootRoute()
 
+const dashboardRouteRoute = dashboardRouteRouteImport.update({
+  id: '/(dashboard)',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const authRouteRoute = authRouteRouteImport.update({
   id: '/(auth)',
   getParentRoute: () => rootRouteImport,
 } as any)
 const dashboardIndexRoute = dashboardIndexRouteImport.update({
-  id: '/(dashboard)/',
+  id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => dashboardRouteRoute,
 } as any)
 const authSignupRoute = authSignupRouteImport.update({
   id: '/signup',
@@ -57,6 +62,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(auth)': typeof authRouteRouteWithChildren
+  '/(dashboard)': typeof dashboardRouteRouteWithChildren
   '/(auth)/signin': typeof authSigninRoute
   '/(auth)/signup': typeof authSignupRoute
   '/(dashboard)/': typeof dashboardIndexRoute
@@ -69,6 +75,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/(auth)'
+    | '/(dashboard)'
     | '/(auth)/signin'
     | '/(auth)/signup'
     | '/(dashboard)/'
@@ -76,7 +83,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   authRouteRoute: typeof authRouteRouteWithChildren
-  dashboardIndexRoute: typeof dashboardIndexRoute
+  dashboardRouteRoute: typeof dashboardRouteRouteWithChildren
 }
 export interface FileServerRoutesByFullPath {
   '/api/auth/$': typeof ApiAuthSplatServerRoute
@@ -102,6 +109,13 @@ export interface RootServerRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/(dashboard)': {
+      id: '/(dashboard)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof dashboardRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(auth)': {
       id: '/(auth)'
       path: '/'
@@ -114,7 +128,7 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof dashboardIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof dashboardRouteRoute
     }
     '/(auth)/signup': {
       id: '/(auth)/signup'
@@ -158,9 +172,21 @@ const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
   authRouteRouteChildren,
 )
 
+interface dashboardRouteRouteChildren {
+  dashboardIndexRoute: typeof dashboardIndexRoute
+}
+
+const dashboardRouteRouteChildren: dashboardRouteRouteChildren = {
+  dashboardIndexRoute: dashboardIndexRoute,
+}
+
+const dashboardRouteRouteWithChildren = dashboardRouteRoute._addFileChildren(
+  dashboardRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   authRouteRoute: authRouteRouteWithChildren,
-  dashboardIndexRoute: dashboardIndexRoute,
+  dashboardRouteRoute: dashboardRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

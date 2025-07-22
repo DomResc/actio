@@ -1,37 +1,36 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
-import { authClient } from "~/lib/auth/authClients";
+import { createFileRoute } from "@tanstack/react-router";
+import { AppSidebar } from "~/components/app-sidebar";
+import { SiteHeader } from "~/components/site-header";
+import { SidebarInset, SidebarProvider } from "~/components/ui/sidebar";
 
 export const Route = createFileRoute("/(dashboard)/")({
   component: Home,
-  beforeLoad: async ({ context }) => {
+  /*  beforeLoad: async ({ context }) => {
     if (!context.userSession) {
       throw redirect({ to: "/signin" });
     }
-  },
+  }, */
 });
 
 function Home() {
-  const { userSession } = Route.useRouteContext();
-  const navigate = Route.useNavigate();
-
   return (
-    <div className="p-2">
-      <h3>Welcome Home!!!</h3>
-      {userSession && (
-        <div>
-          <p>Logged in as: {userSession.email}</p>
-          <button
-            onClick={() => {
-              authClient.signOut();
-
-              navigate({ to: "/signup" });
-            }}
-            className="rounded bg-emerald-500 px-2 py-1 text-sm font-black text-white uppercase"
-          >
-            Logout
-          </button>
+    <div className="[--header-height:calc(--spacing(14))]">
+      <SidebarProvider className="flex flex-col">
+        <SiteHeader />
+        <div className="flex flex-1">
+          <AppSidebar />
+          <SidebarInset>
+            <div className="flex flex-1 flex-col gap-4 p-4">
+              <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+                <div className="bg-muted/50 aspect-video rounded-xl" />
+                <div className="bg-muted/50 aspect-video rounded-xl" />
+                <div className="bg-muted/50 aspect-video rounded-xl" />
+              </div>
+              <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
+            </div>
+          </SidebarInset>
         </div>
-      )}
+      </SidebarProvider>
     </div>
   );
 }
