@@ -12,12 +12,22 @@ import * as React from "react";
 
 import { DefaultCatchBoundary } from "~/components/default-catch-boundary";
 import { NotFound } from "~/components/not-found";
+import { getUserSession } from "~/lib/auth/functions/getUserSession";
 import { seo } from "~/lib/seo";
 import appCss from "~/styles/app.css?url";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
 }>()({
+  beforeLoad: async () => {
+    const userSession = await getUserSession();
+
+    console.log("Root route beforeLoad", userSession);
+
+    return {
+      userSession,
+    };
+  },
   head: () => ({
     meta: [
       {
