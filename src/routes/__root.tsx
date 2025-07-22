@@ -22,8 +22,6 @@ export const Route = createRootRouteWithContext<{
   beforeLoad: async () => {
     const userSession = await getUserSession();
 
-    console.log("Root route beforeLoad", userSession);
-
     return {
       userSession,
     };

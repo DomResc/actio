@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { authClient } from "~/lib/auth/authClients";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/(dashboard)/")({
   component: Home,
   beforeLoad: async ({ context }) => {
     if (!context.userSession) {
@@ -22,7 +22,6 @@ function Home() {
           <p>Logged in as: {userSession.email}</p>
           <button
             onClick={() => {
-              console.log("Logging out user");
               authClient.signOut();
 
               navigate({ to: "/signup" });

@@ -1,15 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { SignupForm } from "~/components/signup-form";
+import { SigninForm } from "~/components/signin-form";
 
-export const Route = createFileRoute("/signup")({
-  component: SignupComponent,
+export const Route = createFileRoute("/(auth)/signin")({
+  component: SigninComponent,
 });
 
-function SignupComponent() {
+function SigninComponent() {
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
-        <SignupForm />
+        <SigninForm />
       </div>
     </div>
   );
