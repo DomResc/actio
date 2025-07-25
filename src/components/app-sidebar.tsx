@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import {
   Files,
   FolderKanban,
@@ -13,15 +11,17 @@ import { SearchForm } from "~/components/search-form";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
   SidebarRail,
 } from "~/components/ui/sidebar";
 
 import { WorkspaceSwitcher } from "~/components/workspace-switcher";
+import { NavFavorites } from "./nav-favorites";
+import { NavFolders } from "./nav-folders";
 import { NavMain } from "./nav-main";
 import { NavSecondary } from "./nav-secondary";
 
-// This is sample data.
 const data = {
   workspaces: [
     {
@@ -59,30 +59,32 @@ const data = {
   ],
   navFavorites: [
     {
-      title: "Notes",
+      name: "Project Management & Task Tracking",
       url: "#",
-      icon: NotebookText,
-      isActive: true,
+      emoji: "📊",
     },
+  ],
+  navFolder: [
     {
-      title: "Projects",
-      url: "#",
-      icon: FolderKanban,
-    },
-    {
-      title: "Files",
-      url: "#",
-      icon: Files,
-    },
-    {
-      title: "Uncategorized",
-      url: "#",
-      icon: Layers2,
-    },
-    {
-      title: "Trash",
-      url: "#",
-      icon: Trash2,
+      name: "Personal Life Management",
+      emoji: "🏠",
+      pages: [
+        {
+          name: "Daily Journal & Reflection",
+          url: "#",
+          emoji: "📔",
+        },
+        {
+          name: "Health & Wellness Tracker",
+          url: "#",
+          emoji: "🍏",
+        },
+        {
+          name: "Personal Growth & Learning Goals",
+          url: "#",
+          emoji: "🌟",
+        },
+      ],
     },
   ],
   navSecondary: [
@@ -94,20 +96,21 @@ const data = {
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar() {
   return (
-    <Sidebar {...props}>
+    <Sidebar variant="inset">
       <SidebarHeader>
         <WorkspaceSwitcher workspace={data.workspaces} />
         <SearchForm />
-        <NavMain items={data.navMain} />
       </SidebarHeader>
       <SidebarContent>
-        {/* <NavFavorites favorites={data.navFavorites} />
-        <NavWorkspaces workspaces={data.navFavorites} /> */}
-
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <NavMain items={data.navMain} />
+        <NavFavorites items={data.navFavorites} />
+        <NavFolders items={data.navFolder} />
       </SidebarContent>
+      <SidebarFooter>
+        <NavSecondary items={data.navSecondary} className="mt-auto" />
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );
