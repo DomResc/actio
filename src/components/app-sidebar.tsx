@@ -6,6 +6,7 @@ import {
   GalleryVerticalEnd,
   Layers2,
   NotebookText,
+  SlidersHorizontal,
   Trash2,
 } from "lucide-react";
 import { SearchForm } from "~/components/search-form";
@@ -86,14 +87,9 @@ const data = {
   ],
   navSecondary: [
     {
-      title: "Support",
+      title: "Settings",
       url: "#",
-      icon: Trash2,
-    },
-    {
-      title: "Feedback",
-      url: "#",
-      icon: Trash2,
+      icon: SlidersHorizontal,
     },
   ],
 };
