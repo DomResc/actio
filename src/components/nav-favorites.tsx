@@ -1,4 +1,4 @@
-import { MoreHorizontal, StarOff } from "lucide-react";
+import { File, MoreHorizontal, StarOff, type LucideIcon } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -21,8 +21,7 @@ export function NavFavorites({
 }: {
   items: {
     name: string;
-    url: string;
-    emoji: string;
+    icon?: LucideIcon;
   }[];
 }) {
   const { isMobile } = useSidebar();
@@ -34,10 +33,8 @@ export function NavFavorites({
         {items.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
-              <a href={item.url} title={item.name}>
-                <span>{item.emoji}</span>
-                <span>{item.name}</span>
-              </a>
+              {item.icon ? <item.icon /> : <File />}
+              <span>{item.name}</span>
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

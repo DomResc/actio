@@ -19,6 +19,8 @@ export const Route = createFileRoute("/(dashboard)/")({
 });
 
 function Home() {
+  const isContent = false;
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -29,18 +31,25 @@ function Home() {
             orientation="vertical"
             className="mr-2 data-[orientation=vertical]:h-4"
           />
-          <Breadcrumb>
-            <BreadcrumbItem>
-              <BreadcrumbPage>Page title</BreadcrumbPage>
-            </BreadcrumbItem>
-          </Breadcrumb>
-          <div className="ml-auto px-3">
-            <NavActions />
-          </div>
+
+          {isContent && (
+            <>
+              <Breadcrumb>
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Page title</BreadcrumbPage>
+                </BreadcrumbItem>
+              </Breadcrumb>
+              <div className="ml-auto px-3">
+                <NavActions />
+              </div>
+            </>
+          )}
         </header>
-        <div className="flex h-full items-center justify-center">
-          Page content
-        </div>
+        {isContent && (
+          <div className="flex h-full items-center justify-center">
+            Page content
+          </div>
+        )}
       </SidebarInset>
     </SidebarProvider>
   );
