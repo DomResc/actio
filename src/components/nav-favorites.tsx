@@ -1,4 +1,5 @@
-import { File, MoreHorizontal, StarOff, type LucideIcon } from "lucide-react";
+import { Link, useRouterState } from "@tanstack/react-router";
+import { File, MoreHorizontal, StarOff } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -21,10 +22,14 @@ export function NavFavorites({
 }: {
   items: {
     name: string;
-    icon?: LucideIcon;
+    to: string;
   }[];
 }) {
   const { isMobile } = useSidebar();
+
+  const currentPath = useRouterState({
+    select: (state) => state.location.pathname,
+  });
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -32,13 +37,15 @@ export function NavFavorites({
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild>
-              {item.icon ? <item.icon /> : <File />}
-              <span>{item.name}</span>
+            <SidebarMenuButton asChild isActive={currentPath === item.to}>
+              <Link to={item.to}>
+                <File />
+                <span>{item.name}</span>
+              </Link>
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuAction showOnHover>
+                <SidebarMenuAction>
                   <MoreHorizontal />
                   <span className="sr-only">More</span>
                 </SidebarMenuAction>

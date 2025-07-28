@@ -1,3 +1,4 @@
+import { Link, useRouterState } from "@tanstack/react-router";
 import { type LucideIcon } from "lucide-react";
 
 import {
@@ -13,19 +14,23 @@ export function NavMain({
   items: {
     title: string;
     icon: LucideIcon;
-    isActive?: boolean;
+    to: string;
   }[];
 }) {
+  const currentPath = useRouterState({
+    select: (state) => state.location.pathname,
+  });
+
   return (
     <SidebarGroup>
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.title}>
-            <SidebarMenuButton asChild isActive={item.isActive}>
-              <div>
+            <SidebarMenuButton asChild isActive={currentPath === item.to}>
+              <Link to={item.to}>
                 <item.icon />
                 <span>{item.title}</span>
-              </div>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}

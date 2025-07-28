@@ -1,8 +1,7 @@
+import { Link, useRouterState } from "@tanstack/react-router";
 import { type LucideIcon } from "lucide-react";
-import * as React from "react";
 
 import {
-  SidebarGroup,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -13,19 +12,23 @@ export function NavSecondary({
 }: {
   items: {
     title: string;
-    url: string;
+    to: string;
     icon: LucideIcon;
   }[];
-} & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+}) {
+  const currentPath = useRouterState({
+    select: (state) => state.location.pathname,
+  });
+
   return (
     <SidebarMenu>
       {items.map((item) => (
         <SidebarMenuItem key={item.title}>
-          <SidebarMenuButton asChild size="sm">
-            <a href={item.url}>
+          <SidebarMenuButton asChild isActive={currentPath === item.to}>
+            <Link to={item.to}>
               <item.icon />
               <span>{item.title}</span>
-            </a>
+            </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
       ))}

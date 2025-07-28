@@ -1,11 +1,5 @@
-import {
-  FolderKanban,
-  GalleryVerticalEnd,
-  Layers2,
-  NotebookText,
-  SlidersHorizontal,
-  Trash2,
-} from "lucide-react";
+import { GalleryVerticalEnd } from "lucide-react";
+import { NavFavorites } from "~/components/nav-favorites";
 import { NavMain } from "~/components/nav-main";
 import { SearchForm } from "~/components/search-form";
 import {
@@ -16,6 +10,8 @@ import {
   SidebarRail,
 } from "~/components/ui/sidebar";
 import { WorkspaceSwitcher } from "~/components/workspace-switcher";
+import { navMain, navSecondary } from "~/config/navigation";
+import { NavSecondary } from "./nav-secondary";
 
 const data = {
   workspaces: [
@@ -24,27 +20,10 @@ const data = {
       logo: GalleryVerticalEnd,
     },
   ],
-  navMain: [
-    {
-      title: "Notes",
-      icon: NotebookText,
-    },
-    {
-      title: "Projects",
-      icon: FolderKanban,
-    },
-    {
-      title: "Files",
-      icon: Layers2,
-    },
-    {
-      title: "Trash",
-      icon: Trash2,
-    },
-  ],
   navFavorites: [
     {
-      name: "Project Management & Task Tracking",
+      name: "Lorem Ipsum",
+      to: "/",
     },
   ],
   navFolder: [
@@ -63,12 +42,6 @@ const data = {
       ],
     },
   ],
-  navSecondary: [
-    {
-      title: "Settings",
-      icon: SlidersHorizontal,
-    },
-  ],
 };
 
 export function AppSidebar() {
@@ -79,15 +52,13 @@ export function AppSidebar() {
         <SearchForm />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navMain} />
+        <NavFavorites items={data.navFavorites} />
 
-        {/*         <NavFavorites items={data.navFavorites} />
-         */}
         {/*  <NavFolders items={data.navFolder} /> */}
       </SidebarContent>
       <SidebarFooter>
-        {/*         <NavSecondary items={data.navSecondary} className="mt-auto" />
-         */}{" "}
+        <NavSecondary items={navSecondary} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
