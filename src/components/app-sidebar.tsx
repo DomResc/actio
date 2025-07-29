@@ -2,16 +2,18 @@ import { GalleryVerticalEnd } from "lucide-react";
 import { NavFavorites } from "~/components/nav-favorites";
 import { NavMain } from "~/components/nav-main";
 import { SearchForm } from "~/components/search-form";
+import { SettingsDialog } from "~/components/settings-dialog";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuItem,
   SidebarRail,
 } from "~/components/ui/sidebar";
 import { WorkspaceSwitcher } from "~/components/workspace-switcher";
-import { navMain, navSecondary } from "~/config/navigation";
-import { NavSecondary } from "./nav-secondary";
+import { navMain } from "~/config/navigation";
 
 const data = {
   workspaces: [
@@ -58,7 +60,11 @@ export function AppSidebar() {
         {/*  <NavFolders items={data.navFolder} /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavSecondary items={navSecondary} />
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SettingsDialog />
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

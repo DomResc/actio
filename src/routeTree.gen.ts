@@ -15,7 +15,6 @@ import { Route as dashboardRouteRouteImport } from './routes/(dashboard)/route'
 import { Route as authRouteRouteImport } from './routes/(auth)/route'
 import { Route as dashboardIndexRouteImport } from './routes/(dashboard)/index'
 import { Route as dashboardTrashRouteImport } from './routes/(dashboard)/trash'
-import { Route as dashboardSettingsRouteImport } from './routes/(dashboard)/settings'
 import { Route as dashboardProjectsRouteImport } from './routes/(dashboard)/projects'
 import { Route as dashboardNotesRouteImport } from './routes/(dashboard)/notes'
 import { Route as dashboardFilesRouteImport } from './routes/(dashboard)/files'
@@ -41,11 +40,6 @@ const dashboardIndexRoute = dashboardIndexRouteImport.update({
 const dashboardTrashRoute = dashboardTrashRouteImport.update({
   id: '/trash',
   path: '/trash',
-  getParentRoute: () => dashboardRouteRoute,
-} as any)
-const dashboardSettingsRoute = dashboardSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
   getParentRoute: () => dashboardRouteRoute,
 } as any)
 const dashboardProjectsRoute = dashboardProjectsRouteImport.update({
@@ -86,7 +80,6 @@ export interface FileRoutesByFullPath {
   '/files': typeof dashboardFilesRoute
   '/notes': typeof dashboardNotesRoute
   '/projects': typeof dashboardProjectsRoute
-  '/settings': typeof dashboardSettingsRoute
   '/trash': typeof dashboardTrashRoute
 }
 export interface FileRoutesByTo {
@@ -96,7 +89,6 @@ export interface FileRoutesByTo {
   '/files': typeof dashboardFilesRoute
   '/notes': typeof dashboardNotesRoute
   '/projects': typeof dashboardProjectsRoute
-  '/settings': typeof dashboardSettingsRoute
   '/trash': typeof dashboardTrashRoute
 }
 export interface FileRoutesById {
@@ -108,7 +100,6 @@ export interface FileRoutesById {
   '/(dashboard)/files': typeof dashboardFilesRoute
   '/(dashboard)/notes': typeof dashboardNotesRoute
   '/(dashboard)/projects': typeof dashboardProjectsRoute
-  '/(dashboard)/settings': typeof dashboardSettingsRoute
   '/(dashboard)/trash': typeof dashboardTrashRoute
   '/(dashboard)/': typeof dashboardIndexRoute
 }
@@ -121,18 +112,9 @@ export interface FileRouteTypes {
     | '/files'
     | '/notes'
     | '/projects'
-    | '/settings'
     | '/trash'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/signin'
-    | '/signup'
-    | '/files'
-    | '/notes'
-    | '/projects'
-    | '/settings'
-    | '/trash'
+  to: '/' | '/signin' | '/signup' | '/files' | '/notes' | '/projects' | '/trash'
   id:
     | '__root__'
     | '/(auth)'
@@ -142,7 +124,6 @@ export interface FileRouteTypes {
     | '/(dashboard)/files'
     | '/(dashboard)/notes'
     | '/(dashboard)/projects'
-    | '/(dashboard)/settings'
     | '/(dashboard)/trash'
     | '/(dashboard)/'
   fileRoutesById: FileRoutesById
@@ -201,13 +182,6 @@ declare module '@tanstack/react-router' {
       path: '/trash'
       fullPath: '/trash'
       preLoaderRoute: typeof dashboardTrashRouteImport
-      parentRoute: typeof dashboardRouteRoute
-    }
-    '/(dashboard)/settings': {
-      id: '/(dashboard)/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof dashboardSettingsRouteImport
       parentRoute: typeof dashboardRouteRoute
     }
     '/(dashboard)/projects': {
@@ -277,7 +251,6 @@ interface dashboardRouteRouteChildren {
   dashboardFilesRoute: typeof dashboardFilesRoute
   dashboardNotesRoute: typeof dashboardNotesRoute
   dashboardProjectsRoute: typeof dashboardProjectsRoute
-  dashboardSettingsRoute: typeof dashboardSettingsRoute
   dashboardTrashRoute: typeof dashboardTrashRoute
   dashboardIndexRoute: typeof dashboardIndexRoute
 }
@@ -286,7 +259,6 @@ const dashboardRouteRouteChildren: dashboardRouteRouteChildren = {
   dashboardFilesRoute: dashboardFilesRoute,
   dashboardNotesRoute: dashboardNotesRoute,
   dashboardProjectsRoute: dashboardProjectsRoute,
-  dashboardSettingsRoute: dashboardSettingsRoute,
   dashboardTrashRoute: dashboardTrashRoute,
   dashboardIndexRoute: dashboardIndexRoute,
 }
