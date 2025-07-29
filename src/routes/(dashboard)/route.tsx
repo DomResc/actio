@@ -23,8 +23,10 @@ export const Route = createFileRoute("/(dashboard)")({
 });
 
 function RouteComponent() {
+  const { cookieSession } = Route.useRouteContext();
+
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={cookieSession.sidebarState === "true"}>
       <AppSidebar />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
