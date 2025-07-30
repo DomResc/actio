@@ -1,3 +1,4 @@
+import { useNavigate } from "@tanstack/react-router";
 import { Moon, SlidersHorizontal, Sun, SunMoon } from "lucide-react";
 import * as React from "react";
 
@@ -35,6 +36,7 @@ import {
   SidebarTrigger,
 } from "~/components/ui/sidebar";
 import { navSettings } from "~/config/navigation";
+import { authClient } from "~/lib/auth/authClients";
 
 export function SettingsDialog() {
   const [open, setOpen] = React.useState(false);
@@ -106,7 +108,30 @@ export function SettingsDialog() {
   }
 
   function AccountSettings() {
-    return <div>Impostazioni Account</div>;
+    const navigate = useNavigate();
+
+    return (
+      <div className="flex flex-col gap-6">
+        {/* Dropdown Theme */}
+        <div>
+          <label className="mb-2 block text-sm font-medium">Sign out</label>
+          <p className="text-muted-foreground mb-2 text-xs">
+            You can sign out of your account. This will remove your session and
+            you will need to log in again.
+          </p>
+          <Button
+            variant="destructive"
+            onClick={() => {
+              authClient.signOut().then(() => {
+                navigate({ to: "/" });
+              });
+            }}
+          >
+            Sign out
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   function renderPage() {
