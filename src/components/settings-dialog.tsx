@@ -34,6 +34,7 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
+  useSidebar,
 } from "~/components/ui/sidebar";
 import { navSettings } from "~/config/navigation";
 import { authClient } from "~/lib/auth/authClients";
@@ -41,6 +42,7 @@ import { authClient } from "~/lib/auth/authClients";
 export function SettingsDialog() {
   const [open, setOpen] = React.useState(false);
   const [page, setPage] = React.useState("Appearance");
+  const { isMobile } = useSidebar();
 
   function AppearanceSettings() {
     const { setTheme, theme } = useTheme();
@@ -189,11 +191,15 @@ export function SettingsDialog() {
           </Sidebar>
           <SidebarInset>
             <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-              <SidebarTrigger className="-ml-1" />
-              <Separator
-                orientation="vertical"
-                className="mr-2 data-[orientation=vertical]:h-4"
-              />
+              {isMobile && (
+                <>
+                  <SidebarTrigger className="-ml-1" />
+                  <Separator
+                    orientation="vertical"
+                    className="mr-2 data-[orientation=vertical]:h-4"
+                  />
+                </>
+              )}
               <Breadcrumb>
                 <BreadcrumbItem>
                   <BreadcrumbPage>{page}</BreadcrumbPage>
