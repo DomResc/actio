@@ -52,7 +52,7 @@ export function NavFolders({
             <Collapsible key={item.name}>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <a href="#">
+                  <a>
                     <span>{item.emoji}</span>
                     <span>{item.name}</span>
                   </a>
@@ -89,7 +89,7 @@ export function NavFolders({
                     {item.pages.map((page) => (
                       <SidebarMenuSubItem key={page.name}>
                         <SidebarMenuSubButton asChild>
-                          <a href="#">
+                          <a>
                             <span>{page.emoji}</span>
                             <span>{page.name}</span>
                           </a>

@@ -48,7 +48,7 @@ const data = {
 
 export function AppSidebar() {
   return (
-    <Sidebar variant="inset">
+    <Sidebar>
       <SidebarHeader>
         <WorkspaceSwitcher workspace={data.workspaces} />
         <SearchForm />

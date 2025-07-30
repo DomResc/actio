@@ -8,6 +8,7 @@ import {
 } from "~/components/ui/breadcrumb";
 import { Separator } from "~/components/ui/separator";
 import {
+  SidebarContent,
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
@@ -26,14 +27,7 @@ function RouteComponent() {
   const { cookieSession } = Route.useRouteContext();
 
   return (
-    <SidebarProvider
-      defaultOpen={cookieSession.sidebarState === "true"}
-      style={{
-        // @ts-expect-error: Allow custom CSS variables
-        "--sidebar-width": "16rem",
-        "--sidebar-width-mobile": "18rem",
-      }}
-    >
+    <SidebarProvider defaultOpen={cookieSession.sidebarState === "true"}>
       <AppSidebar />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
@@ -51,7 +45,9 @@ function RouteComponent() {
             <NavActions />
           </div>
         </header>
-        <Outlet />
+        <SidebarContent className="p-4">
+          <Outlet />
+        </SidebarContent>
       </SidebarInset>
     </SidebarProvider>
   );
