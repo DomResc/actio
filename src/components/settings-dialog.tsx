@@ -1,6 +1,7 @@
-import { SlidersHorizontal } from "lucide-react";
+import { Moon, SlidersHorizontal, Sun, SunMoon } from "lucide-react";
 import * as React from "react";
 
+import { useTheme } from "~/components/theme-provider";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -42,8 +43,34 @@ export function SettingsDialog() {
   const [page, setPage] = React.useState("Appearance");
 
   function AppearanceSettings() {
-    const [theme, setTheme] = React.useState("System");
+    const { setTheme, theme } = useTheme();
     const [sidebarWidth, setSidebarWidth] = React.useState(240);
+
+    function getThemeDisplay() {
+      switch (theme) {
+        case "light":
+          return (
+            <>
+              <Sun className="mr-2" />
+              Light
+            </>
+          );
+        case "dark":
+          return (
+            <>
+              <Moon className="mr-2" />
+              Dark
+            </>
+          );
+        default:
+          return (
+            <>
+              <SunMoon className="mr-2" />
+              System
+            </>
+          );
+      }
+    }
 
     return (
       <div className="flex flex-col gap-6">
@@ -56,19 +83,26 @@ export function SettingsDialog() {
           </p>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="w-40 justify-between">
-                {theme}
+              <Button variant="outline">
+                {getThemeDisplay()}
+                <span className="sr-only">Toggle theme</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-              <DropdownMenuItem onSelect={() => setTheme("Light")}>
-                Light
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setTheme("light")}>
+                {" "}
+                <Sun className="mr-2" />
+                Light{" "}
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => setTheme("Dark")}>
-                Dark
+              <DropdownMenuItem onClick={() => setTheme("dark")}>
+                {" "}
+                <Moon className="mr-2" />
+                Dark{" "}
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => setTheme("System")}>
-                System
+              <DropdownMenuItem onClick={() => setTheme("system")}>
+                {" "}
+                <SunMoon className="mr-2" />
+                System{" "}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -138,7 +172,6 @@ export function SettingsDialog() {
                           isActive={page === item.title}
                         >
                           <a
-                            href="#"
                             onClick={(e) => {
                               e.preventDefault();
                               setPage(item.title);

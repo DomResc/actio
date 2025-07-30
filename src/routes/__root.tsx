@@ -12,6 +12,7 @@ import * as React from "react";
 
 import { DefaultCatchBoundary } from "~/components/default-catch-boundary";
 import { NotFound } from "~/components/not-found";
+import { ThemeProvider } from "~/components/theme-provider";
 import { getUserSession } from "~/lib/auth/functions/getUserSession";
 import { getCookieSession } from "~/lib/cookie";
 import { seo } from "~/lib/seo";
@@ -94,7 +95,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
         <TanStackRouterDevtools position="bottom-right" />
         <ReactQueryDevtools buttonPosition="bottom-right" />
         <Scripts />
