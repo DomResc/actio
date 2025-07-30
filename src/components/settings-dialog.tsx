@@ -112,7 +112,7 @@ export function SettingsDialog() {
 
     return (
       <div className="flex flex-col gap-6">
-        {/* Dropdown Theme */}
+        {/* Signout */}
         <div>
           <label className="mb-2 block text-sm font-medium">Sign out</label>
           <p className="text-muted-foreground mb-2 text-xs">
