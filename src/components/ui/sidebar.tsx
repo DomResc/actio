@@ -21,10 +21,9 @@ import {
   TooltipTrigger,
 } from "~/components/ui/tooltip";
 import { useIsMobile } from "~/hooks/use-mobile";
+import { setCookieSession } from "~/lib/cookie";
 import { cn } from "~/lib/utils";
 
-const SIDEBAR_COOKIE_NAME = "sidebar_state";
-const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = "16rem";
 const SIDEBAR_WIDTH_MOBILE = "18rem";
 const SIDEBAR_WIDTH_ICON = "3rem";
@@ -72,7 +71,7 @@ function SidebarProvider({
   const [_open, _setOpen] = React.useState(defaultOpen);
   const open = openProp ?? _open;
   const setOpen = React.useCallback(
-    (value: boolean | ((value: boolean) => boolean)) => {
+    async (value: boolean | ((value: boolean) => boolean)) => {
       const openState = typeof value === "function" ? value(open) : value;
       if (setOpenProp) {
         setOpenProp(openState);
@@ -80,8 +79,16 @@ function SidebarProvider({
         _setOpen(openState);
       }
 
-      // This sets the cookie to keep the sidebar state.
-      document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
+      try {
+        await setCookieSession({
+          data: {
+            key: "actio_sidebar_state",
+            value: `${openState}`,
+          },
+        });
+      } catch (err) {
+        console.error("Failed to set sidebar cookie", err);
+      }
     },
     [setOpenProp, open],
   );

@@ -12,7 +12,7 @@ import * as React from "react";
 
 import { DefaultCatchBoundary } from "~/components/default-catch-boundary";
 import { NotFound } from "~/components/not-found";
-import { ThemeProvider } from "~/components/theme-provider";
+import { ThemeProvider, type Theme } from "~/components/theme-provider";
 import { getUserSession } from "~/lib/auth/functions/getUserSession";
 import { getCookieSession } from "~/lib/cookie";
 import { seo } from "~/lib/seo";
@@ -23,12 +23,24 @@ export const Route = createRootRouteWithContext<{
 }>()({
   beforeLoad: async () => {
     const userSession = await getUserSession();
-    const sidebarState = await getCookieSession({ data: "sidebar_state" });
+    const sidebarState = await getCookieSession({
+      data: {
+        key: "actio_sidebar_state",
+        refresh: true,
+      },
+    });
+    const appTheme = await getCookieSession({
+      data: {
+        key: "actio_app_theme",
+        refresh: true,
+      },
+    });
 
     return {
       userSession,
       cookieSession: {
         sidebarState,
+        appTheme,
       },
     };
   },
@@ -89,13 +101,19 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const { cookieSession } = Route.useRouteContext();
+
   return (
     <html>
       <head>
         <HeadContent />
       </head>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider
+          defaultTheme={(cookieSession?.appTheme as Theme) ?? "system"}
+        >
+          {children}
+        </ThemeProvider>
         <TanStackRouterDevtools position="bottom-right" />
         <ReactQueryDevtools buttonPosition="bottom-right" />
         <Scripts />

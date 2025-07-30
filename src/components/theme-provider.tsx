@@ -1,40 +1,33 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { setCookieSession } from "../lib/cookie";
 
-// Theme type definition
 export type Theme = "dark" | "light" | "system";
 
-// Props for ThemeProvider
-interface ThemeProviderProps {
+type ThemeProviderProps = {
   children: React.ReactNode;
   defaultTheme?: Theme;
   storageKey?: string;
-}
+};
 
-// Context state type
-interface ThemeProviderState {
+type ThemeProviderState = {
   theme: Theme;
   setTheme: (theme: Theme) => void;
-}
-
-const DEFAULT_THEME: Theme = "system";
-const DEFAULT_STORAGE_KEY = "app_theme";
+};
 
 const initialState: ThemeProviderState = {
-  theme: DEFAULT_THEME,
+  theme: "system",
   setTheme: () => null,
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
-// Helper to get theme from localStorage
-function getStoredTheme(storageKey: string, fallback: Theme): Theme {
-  if (typeof window === "undefined") return fallback;
-  const stored = localStorage.getItem(storageKey);
-  return (stored as Theme) || fallback;
-}
-
-// Helper to apply theme to document root
-function applyThemeToDocument(theme: Theme) {
+function applyTheme(theme: Theme) {
   if (typeof window === "undefined") return;
   const root = window.document.documentElement;
   root.classList.remove("light", "dark");
@@ -51,42 +44,58 @@ function applyThemeToDocument(theme: Theme) {
 
 export function ThemeProvider({
   children,
-  defaultTheme = DEFAULT_THEME,
-  storageKey = DEFAULT_STORAGE_KEY,
+  defaultTheme = "system",
+  storageKey = "actio_app_theme",
   ...props
 }: ThemeProviderProps) {
-  // State for current theme
   const [theme, setTheme] = useState<Theme>(defaultTheme);
 
-  // On mount, update theme from localStorage
+  // Applica la classe tema quando il tema cambia
   useEffect(() => {
-    setTheme(getStoredTheme(storageKey, defaultTheme));
-  }, [storageKey, defaultTheme]);
-
-  // Apply theme to document whenever it changes
-  useEffect(() => {
-    applyThemeToDocument(theme);
+    applyTheme(theme);
+    let systemListener: ((e: MediaQueryListEvent) => void) | undefined;
+    if (theme === "system" && typeof window !== "undefined") {
+      const mql = window.matchMedia("(prefers-color-scheme: dark)");
+      systemListener = (e: MediaQueryListEvent) => {
+        applyTheme(e.matches ? "dark" : "light");
+      };
+      mql.addEventListener("change", systemListener);
+      // cleanup
+      return () => {
+        mql.removeEventListener("change", systemListener!);
+      };
+    }
   }, [theme]);
 
-  // Context value with persistent setter
-  const contextValue: ThemeProviderState = {
-    theme,
-    setTheme: (newTheme: Theme) => {
-      if (typeof window !== "undefined") {
-        localStorage.setItem(storageKey, newTheme);
+  const handleSetTheme = useCallback(
+    async (newTheme: Theme) => {
+      try {
+        await setCookieSession({
+          data: {
+            key: storageKey,
+            value: newTheme,
+          },
+        });
+      } catch (err) {
+        console.error("Failed to set theme cookie", err);
       }
       setTheme(newTheme);
     },
+    [storageKey],
+  );
+
+  const value = {
+    theme,
+    setTheme: handleSetTheme,
   };
 
   return (
-    <ThemeProviderContext.Provider {...props} value={contextValue}>
+    <ThemeProviderContext.Provider {...props} value={value}>
       {children}
     </ThemeProviderContext.Provider>
   );
 }
 
-// Hook to access theme context
 export const useTheme = () => {
   const context = useContext(ThemeProviderContext);
   if (context === undefined) {
