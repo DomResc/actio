@@ -117,7 +117,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   const themeScript = getInlineThemeScript();
   const { cookieSession } = Route.useRouteContext();
 
-  // Determina la classe tema da applicare al server
+  // Determine the theme class to apply on the server
+
   const defaultTheme = (cookieSession?.appTheme as Theme) ?? "system";
   let themeClass = "";
 
@@ -126,8 +127,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   } else if (defaultTheme === "light") {
     themeClass = "light";
   } else {
-    // Per "system", applica "dark" come default durante SSR
-    // Lo script client aggiornerà se necessario
+    // For "system", apply "dark" as the default during SSR
+    // The client script will update if necessary
     themeClass = "dark";
   }
 

@@ -40,7 +40,7 @@ function applyTheme(theme: Theme) {
     targetTheme = theme;
   }
 
-  // Applica solo se la classe non è già quella corretta
+  // Apply only if the class is not already correct
   const currentTheme = root.classList.contains("dark")
     ? "dark"
     : root.classList.contains("light")
