@@ -336,6 +336,7 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
   const [isDragging, setIsDragging] = React.useState(false);
   const dragStartX = React.useRef<number>(0);
   const dragStartWidth = React.useRef<number>(0);
+  const hasDraggedDistance = React.useRef<boolean>(false);
 
   // Helper function to convert rem/px values to pixels
   const parseWidthToPixels = React.useCallback((widthValue: string): number => {
@@ -375,6 +376,7 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
       e.stopPropagation();
 
       setIsDragging(true);
+      hasDraggedDistance.current = false; // Reset the flag
       dragStartX.current = e.clientX;
       dragStartWidth.current = parseWidthToPixels(width);
 
@@ -388,8 +390,17 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
     (e: MouseEvent) => {
       if (!isDragging) return;
 
-      const deltaX = e.clientX - dragStartX.current;
-      const newWidthPixels = constrainWidth(dragStartWidth.current + deltaX);
+      const deltaX = Math.abs(e.clientX - dragStartX.current);
+
+      // Consider it a drag if moved more than 3 pixels
+      if (deltaX > 3) {
+        hasDraggedDistance.current = true;
+      }
+
+      const signedDeltaX = e.clientX - dragStartX.current;
+      const newWidthPixels = constrainWidth(
+        dragStartWidth.current + signedDeltaX,
+      );
       const newWidthRem = pixelsToRem(newWidthPixels);
 
       setWidth(newWidthRem);
@@ -405,8 +416,8 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
   }, [isDragging]);
 
   const handleClick = React.useCallback(() => {
-    // Only toggle if we weren't dragging
-    if (!isDragging) {
+    // Only toggle if we weren't dragging and haven't dragged a significant distance
+    if (!isDragging && !hasDraggedDistance.current) {
       toggleSidebar();
     }
   }, [isDragging, toggleSidebar]);
