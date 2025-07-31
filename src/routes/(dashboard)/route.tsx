@@ -27,7 +27,14 @@ function RouteComponent() {
   const { cookieSession } = Route.useRouteContext();
 
   return (
-    <SidebarProvider defaultOpen={cookieSession.sidebarState === "true"}>
+    <SidebarProvider
+      defaultOpen={cookieSession.sidebarState === "true"}
+      style={
+        {
+          "--sidebar-width": "24rem",
+        } as React.CSSProperties
+      }
+    >
       <AppSidebar />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
