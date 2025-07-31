@@ -30,15 +30,26 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 function applyTheme(theme: Theme) {
   if (typeof window === "undefined") return;
   const root = window.document.documentElement;
-  root.classList.remove("light", "dark");
+
+  let targetTheme: string;
   if (theme === "system") {
-    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-      .matches
+    targetTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
       : "light";
-    root.classList.add(systemTheme);
   } else {
-    root.classList.add(theme);
+    targetTheme = theme;
+  }
+
+  // Applica solo se la classe non è già quella corretta
+  const currentTheme = root.classList.contains("dark")
+    ? "dark"
+    : root.classList.contains("light")
+      ? "light"
+      : "";
+
+  if (currentTheme !== targetTheme) {
+    root.classList.remove("light", "dark");
+    root.classList.add(targetTheme);
   }
 }
 
@@ -50,14 +61,26 @@ export function ThemeProvider({
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(defaultTheme);
 
-  // Applica la classe tema quando il tema cambia
+  // Applies the theme class when the theme changes
   useEffect(() => {
     applyTheme(theme);
     let systemListener: ((e: MediaQueryListEvent) => void) | undefined;
     if (theme === "system" && typeof window !== "undefined") {
       const mql = window.matchMedia("(prefers-color-scheme: dark)");
       systemListener = (e: MediaQueryListEvent) => {
-        applyTheme(e.matches ? "dark" : "light");
+        const root = window.document.documentElement;
+        const newTheme = e.matches ? "dark" : "light";
+        const currentTheme = root.classList.contains("dark")
+          ? "dark"
+          : root.classList.contains("light")
+            ? "light"
+            : "";
+
+        // Apply only if the class is not already correct
+        if (currentTheme !== newTheme) {
+          root.classList.remove("light", "dark");
+          root.classList.add(newTheme);
+        }
       };
       mql.addEventListener("change", systemListener);
       // cleanup
@@ -105,5 +128,34 @@ export const useTheme = () => {
 };
 
 export function getInlineThemeScript(cookieName: string = "actio_app_theme") {
-  return `\n(function() {\n  // Legge il valore di un cookie\n  function getCookie(name) {\n    const value = '; ' + document.cookie;\n    const parts = value.split('; ' + name + '=');\n    if (parts.length === 2) return parts.pop().split(';').shift();\n    return null;\n  }\n  // Ottieni il tema dal cookie\n  var theme = getCookie("${cookieName}");\n  // Se non impostato o 'system', usa la preferenza di sistema\n  if (!theme || theme === 'system') {\n    theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';\n  }\n  // Applica la classe tema all'elemento <html>\n  document.documentElement.classList.remove('light', 'dark');\n  document.documentElement.classList.add(theme);\n})();\n`;
+  return `
+(function() {
+  // Reads the value of a cookie
+  function getCookie(name) {
+    const value = '; ' + document.cookie;
+    const parts = value.split('; ' + name + '=');
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+  }
+  // Get the theme from the cookie
+  var theme = getCookie("${cookieName}");
+  var resolvedTheme;
+  
+  // If not set or 'system', use system preference
+  if (!theme || theme === 'system') {
+    resolvedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  } else {
+    resolvedTheme = theme;
+  }
+  
+  // Apply the theme class to the <html> element only if different from the current one
+  var html = document.documentElement;
+  var currentClass = html.classList.contains('dark') ? 'dark' : html.classList.contains('light') ? 'light' : '';
+  
+  if (currentClass !== resolvedTheme) {
+    html.classList.remove('light', 'dark');
+    html.classList.add(resolvedTheme);
+  }
+})();
+`;
 }

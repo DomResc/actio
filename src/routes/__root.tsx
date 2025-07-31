@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import * as React from "react";
+import { Toaster } from "sonner";
 
 import { DefaultCatchBoundary } from "~/components/default-catch-boundary";
 import { NotFound } from "~/components/not-found";
@@ -116,18 +117,29 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   const themeScript = getInlineThemeScript();
   const { cookieSession } = Route.useRouteContext();
 
+  // Determina la classe tema da applicare al server
+  const defaultTheme = (cookieSession?.appTheme as Theme) ?? "system";
+  let themeClass = "";
+
+  if (defaultTheme === "dark") {
+    themeClass = "dark";
+  } else if (defaultTheme === "light") {
+    themeClass = "light";
+  } else {
+    // Per "system", applica "dark" come default durante SSR
+    // Lo script client aggiornerà se necessario
+    themeClass = "dark";
+  }
+
   return (
-    <html>
+    <html className={themeClass}>
       <head>
         <HeadContent />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
-        <ThemeProvider
-          defaultTheme={(cookieSession?.appTheme as Theme) ?? "system"}
-        >
-          {children}
-        </ThemeProvider>
+        <ThemeProvider defaultTheme={defaultTheme}>{children}</ThemeProvider>
+        <Toaster />
         <TanStackRouterDevtools position="bottom-right" />
         <ReactQueryDevtools buttonPosition="bottom-right" />
         <Scripts />
