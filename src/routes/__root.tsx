@@ -33,6 +33,12 @@ export const Route = createRootRouteWithContext<{
         refresh: true,
       },
     });
+    const sidebarWidth = await getCookieSession({
+      data: {
+        key: "actio_sidebar_width",
+        refresh: true,
+      },
+    });
     const appTheme = await getCookieSession({
       data: {
         key: "actio_app_theme",
@@ -44,6 +50,7 @@ export const Route = createRootRouteWithContext<{
       userSession,
       cookieSession: {
         sidebarState,
+        sidebarWidth,
         appTheme,
       },
     };

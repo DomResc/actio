@@ -29,11 +29,7 @@ function RouteComponent() {
   return (
     <SidebarProvider
       defaultOpen={cookieSession.sidebarState === "true"}
-      style={
-        {
-          "--sidebar-width": "24rem",
-        } as React.CSSProperties
-      }
+      defaultWidth={cookieSession.sidebarWidth || "24rem"}
     >
       <AppSidebar />
       <SidebarInset>
