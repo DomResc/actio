@@ -12,7 +12,11 @@ import * as React from "react";
 
 import { DefaultCatchBoundary } from "~/components/default-catch-boundary";
 import { NotFound } from "~/components/not-found";
-import { ThemeProvider, type Theme } from "~/components/theme-provider";
+import {
+  ThemeProvider,
+  getInlineThemeScript,
+  type Theme,
+} from "~/components/theme-provider";
 import { getUserSession } from "~/lib/auth/functions/getUserSession";
 import { getCookieSession } from "~/lib/cookie";
 import { seo } from "~/lib/seo";
@@ -101,12 +105,15 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  // Inline script to apply the theme BEFORE hydration
+  const themeScript = getInlineThemeScript();
   const { cookieSession } = Route.useRouteContext();
 
   return (
     <html>
       <head>
         <HeadContent />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
         <ThemeProvider

@@ -103,3 +103,7 @@ export const useTheme = () => {
   }
   return context;
 };
+
+export function getInlineThemeScript(cookieName: string = "actio_app_theme") {
+  return `\n(function() {\n  // Legge il valore di un cookie\n  function getCookie(name) {\n    const value = '; ' + document.cookie;\n    const parts = value.split('; ' + name + '=');\n    if (parts.length === 2) return parts.pop().split(';').shift();\n    return null;\n  }\n  // Ottieni il tema dal cookie\n  var theme = getCookie("${cookieName}");\n  // Se non impostato o 'system', usa la preferenza di sistema\n  if (!theme || theme === 'system') {\n    theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';\n  }\n  // Applica la classe tema all'elemento <html>\n  document.documentElement.classList.remove('light', 'dark');\n  document.documentElement.classList.add(theme);\n})();\n`;
+}
