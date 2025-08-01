@@ -29,7 +29,7 @@ function RouteComponent() {
   return (
     <SidebarProvider
       defaultOpen={cookieSession.sidebarState === "true"}
-      defaultWidth={cookieSession.sidebarWidth || "24rem"}
+      defaultWidth={cookieSession.sidebarWidth || "16rem"}
     >
       <AppSidebar />
       <SidebarInset>
