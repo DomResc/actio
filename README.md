@@ -1,3 +1,7 @@
+# ⚠️ Warning: Work In Progress
+
+Everything described in this repository is still under active development (WIP) and subject to significant changes. Features, architecture, and documentation may change frequently.
+
 # Actio
 
 **Actio** is an open source tool for knowledge management and project management, designed for individuals and teams, with a focus on security, privacy, real-time collaboration, and methodological flexibility.
