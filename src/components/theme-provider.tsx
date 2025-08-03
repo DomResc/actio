@@ -126,36 +126,3 @@ export const useTheme = () => {
   }
   return context;
 };
-
-export function getInlineThemeScript(cookieName: string = "actio_app_theme") {
-  return `
-(function() {
-  // Reads the value of a cookie
-  function getCookie(name) {
-    const value = '; ' + document.cookie;
-    const parts = value.split('; ' + name + '=');
-    if (parts.length === 2) return parts.pop().split(';').shift();
-    return null;
-  }
-  // Get the theme from the cookie
-  var theme = getCookie("${cookieName}");
-  var resolvedTheme;
-  
-  // If not set or 'system', use system preference
-  if (!theme || theme === 'system') {
-    resolvedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  } else {
-    resolvedTheme = theme;
-  }
-  
-  // Apply the theme class to the <html> element only if different from the current one
-  var html = document.documentElement;
-  var currentClass = html.classList.contains('dark') ? 'dark' : html.classList.contains('light') ? 'light' : '';
-  
-  if (currentClass !== resolvedTheme) {
-    html.classList.remove('light', 'dark');
-    html.classList.add(resolvedTheme);
-  }
-})();
-`;
-}

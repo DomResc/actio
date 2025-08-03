@@ -9,15 +9,10 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import * as React from "react";
-import { Toaster } from "sonner";
 
 import { DefaultCatchBoundary } from "~/components/default-catch-boundary";
 import { NotFound } from "~/components/not-found";
-import {
-  ThemeProvider,
-  getInlineThemeScript,
-  type Theme,
-} from "~/components/theme-provider";
+import { ThemeProvider, type Theme } from "~/components/theme-provider";
 import { getUserSession } from "~/lib/auth/functions/getUserSession";
 import { getCookieSession } from "~/lib/cookie";
 import { seo } from "~/lib/seo";
@@ -114,7 +109,6 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   // Inline script to apply the theme BEFORE hydration
-  const themeScript = getInlineThemeScript();
   const { cookieSession } = Route.useRouteContext();
 
   // Determine the theme class to apply on the server
@@ -136,11 +130,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     <html className={themeClass}>
       <head>
         <HeadContent />
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script />
       </head>
       <body>
         <ThemeProvider defaultTheme={defaultTheme}>{children}</ThemeProvider>
-        <Toaster />
         <TanStackRouterDevtools position="bottom-right" />
         <ReactQueryDevtools buttonPosition="bottom-right" />
         <Scripts />
