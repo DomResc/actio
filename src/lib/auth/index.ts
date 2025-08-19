@@ -13,4 +13,5 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  telemetry: { enabled: false },
 });
