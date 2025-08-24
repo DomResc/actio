@@ -12,5 +12,8 @@ node_modules/
 # Local DB
 *.db*
 
+# Local docs
+docs/
+
 # Environment and config files
 .env
