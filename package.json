@@ -1,0 +1,14 @@
+{
+    "name": "actio",
+    "private": true,
+    "version": "0.0.0",
+    "packageManager": "pnpm@9.12.3",
+    "scripts": {
+        "dev": "pnpm -r --parallel dev",
+        "dev:server": "pnpm --filter server dev",
+        "dev:webapp": "pnpm --filter webapp dev",
+        "build": "pnpm --filter server build:ts && pnpm --filter webapp build",
+        "lint": "pnpm --filter webapp lint",
+        "test": "pnpm --filter server test"
+    }
+}
